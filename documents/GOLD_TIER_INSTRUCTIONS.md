@@ -23,7 +23,7 @@ graph TD
     E --> G[User Review]
     G -- Approved --> F
     
-    subgraph Action Layer (MCP Servers)
+    subgraph Action_Layer["Action Layer (MCP Servers)"]
         M1[Email MCP]
         M2[Social MCP]
         M3[Accounting MCP]
