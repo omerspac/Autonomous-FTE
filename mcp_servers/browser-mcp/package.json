@@ -1,0 +1,11 @@
+{
+  "name": "browser-mcp",
+  "version": "1.0.0",
+  "description": "Headless Browser MCP Server",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "dotenv": "^16.4.5",
+    "puppeteer": "^22.0.0"
+  }
+}

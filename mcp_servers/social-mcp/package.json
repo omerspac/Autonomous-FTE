@@ -1,0 +1,10 @@
+{
+  "name": "social-mcp",
+  "version": "1.0.0",
+  "description": "Social Media MCP Server",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "dotenv": "^16.4.5"
+  }
+}

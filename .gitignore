@@ -1,0 +1,79 @@
+# -----------------------------
+# OS / Editor
+# -----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# -----------------------------
+# Python
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build/test artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# -----------------------------
+# Node / JS
+# -----------------------------
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# -----------------------------
+# Environment / Secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+
+# -----------------------------
+# Logs / Runtime output
+# -----------------------------
+*.log
+logs/
+AI_Employee/logs/
+AI_Employee/vault/Logs/
+Logs/
+
+# -----------------------------
+# Databases / temp files
+# -----------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.tmp
+*.temp
+
+# -----------------------------
+# Process manager
+# -----------------------------
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# -----------------------------
+# GMAIL Watcher credentials
+# -----------------------------
+credentials.json

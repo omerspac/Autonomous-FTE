@@ -1,0 +1,1 @@
+﻿---\ntype: email\nfrom: boss@example.com\nsubject: URGENT: Create sales report\n---\n\nPlease create a sales report for Q1 and post a summary to LinkedIn.

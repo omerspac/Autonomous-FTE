@@ -1,0 +1,11 @@
+{
+  "name": "accounting-mcp",
+  "version": "1.0.0",
+  "description": "Odoo Accounting MCP Server",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "dotenv": "^16.4.5",
+    "xmlrpc": "^1.3.2"
+  }
+}

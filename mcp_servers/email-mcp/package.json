@@ -1,0 +1,13 @@
+{
+  "name": "autonomous-fte-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Autonomous FTE",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "dotenv": "^16.4.5"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
