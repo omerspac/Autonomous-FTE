@@ -77,3 +77,8 @@ pids/
 # GMAIL Watcher credentials
 # -----------------------------
 credentials.json
+
+# -----------------------------
+# Docker
+# -----------------------------
+docker-compose.yml
