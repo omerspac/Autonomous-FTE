@@ -82,3 +82,10 @@ credentials.json
 # Docker
 # -----------------------------
 docker-compose.yml
+docker-compose.yaml
+docker-compose.override.yml
+docker-compose.override.yaml
+docker-compose.local.yml
+docker-compose.local.yaml
+docker-compose.*.local.yml
+docker-compose.*.local.yaml
