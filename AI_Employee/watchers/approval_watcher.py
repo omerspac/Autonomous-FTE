@@ -48,13 +48,48 @@ class ApprovalWatcher(BaseWatcher):
         
         logger.info(f"Executing approved action: {action_type} via {target}")
         
-        # Mocking the MCP call
         result = {
             "status": "SUCCESS",
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "action": action_type,
             "details": f"Executed action based on plan for {metadata.get('source_file')}"
         }
+
+        if target == "social-mcp":
+            content = self._extract_social_content(body)
+            repo_root = Path(__file__).resolve().parents[2]
+            social_mcp_dir = repo_root / "mcp_servers" / "social-mcp"
+
+            cmd = ["node", "post_twitter_cli.js", content]
+            proc = subprocess.run(
+                cmd,
+                cwd=social_mcp_dir,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            if proc.returncode != 0:
+                error_text = (proc.stderr or proc.stdout or "Unknown X execution error").strip()
+                result = {
+                    "status": "FAILED",
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "action": action_type,
+                    "details": error_text,
+                }
+            else:
+                cli_out = (proc.stdout or "").strip()
+                try:
+                    payload = json.loads(cli_out) if cli_out else {}
+                except json.JSONDecodeError:
+                    payload = {"raw": cli_out}
+
+                result = {
+                    "status": "SUCCESS",
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "action": action_type,
+                    "details": payload,
+                }
         
         # Comprehensive Audit Logging
         log_ai_action(
@@ -67,6 +102,17 @@ class ApprovalWatcher(BaseWatcher):
         )
             
         return result
+
+    def _extract_social_content(self, body: str) -> str:
+        """Extracts best-effort content text from a generated plan body."""
+        objective_match = re.search(r"# Objective\s*(.*?)\s*(#|$)", body, re.DOTALL | re.IGNORECASE)
+        if objective_match:
+            text = objective_match.group(1).strip()
+        else:
+            text = body.strip()
+
+        # Keep the content concise for X posting limits.
+        return text[:260]
 
     def check_for_updates(self) -> bool:
         approved_plans = list(self.approved_dir.glob("*.md"))

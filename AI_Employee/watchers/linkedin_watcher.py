@@ -9,10 +9,7 @@ logger = logging.getLogger(__name__)
 
 class LinkedInWatcher(BaseWatcher):
     def __init__(self, vault_path: Path, check_interval_seconds: int = 60):
-        super().__init__(check_interval_seconds)
-        self.vault_path = vault_path
-        self.needs_action_dir = vault_path / "Needs_Action"
-        self.needs_action_dir.mkdir(parents=True, exist_ok=True)
+        super().__init__(vault_path, check_interval_seconds)
 
     def check_for_updates(self) -> bool:
         """

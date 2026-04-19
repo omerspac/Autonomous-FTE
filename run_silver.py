@@ -6,6 +6,8 @@ import signal
 import logging
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # Clear console logs
 if os.name == 'nt':
     os.system('cls')
@@ -14,6 +16,7 @@ else:
 
 # Add AI_Employee to sys.path
 script_dir = Path(__file__).resolve().parent
+load_dotenv(script_dir / ".env")
 sys.path.insert(0, str(script_dir))
 sys.path.insert(0, str(script_dir / "AI_Employee"))
 
@@ -29,6 +32,7 @@ from AI_Employee.watchers.filesystem_watcher import FileSystemWatcher
 from AI_Employee.watchers.gmail_watcher import GmailWatcher
 from AI_Employee.watchers.whatsapp_watcher import WhatsAppWatcher
 from AI_Employee.watchers.linkedin_watcher import LinkedInWatcher
+from AI_Employee.watchers.approval_watcher import ApprovalWatcher
 from AI_Employee.utils.dashboard_manager import update_dashboard
 
 # Global flag for graceful shutdown
@@ -43,12 +47,15 @@ def signal_handler(signum, frame):
     _running = False
 
 def start_watcher(watcher_class, vault_path, name):
-    watcher = watcher_class(vault_path=vault_path)
-    thread = threading.Thread(target=watcher.run, daemon=True, name=name)
-    thread.start()
-    watchers.append(watcher)
-    watcher_threads.append(thread)
-    logger.info(f"{name} started.")
+    try:
+        watcher = watcher_class(vault_path=vault_path)
+        thread = threading.Thread(target=watcher.run, daemon=True, name=name)
+        thread.start()
+        watchers.append(watcher)
+        watcher_threads.append(thread)
+        logger.info(f"{name} started.")
+    except Exception as e:
+        logger.exception(f"{name} failed to start and will be skipped: {e}")
 
 def main():
     global orchestrator_instance
@@ -69,16 +76,18 @@ def main():
     # Initialize Watchers
     start_watcher(FileSystemWatcher, vault_path, "FileSystemWatcher")
     start_watcher(GmailWatcher, vault_path, "GmailWatcher")
-    start_watcher(WhatsAppWatcher, vault_path, "WhatsAppWatcher")
     start_watcher(LinkedInWatcher, vault_path, "LinkedInWatcher")
+    start_watcher(ApprovalWatcher, vault_path, "ApprovalWatcher")
 
     # Initialize Orchestrator
     orchestrator_instance = Orchestrator(vault_path=vault_path)
 
+    # Start WhatsApp watcher last so other services are already initialized.
+    start_watcher(WhatsAppWatcher, vault_path, "WhatsAppWatcher")
+
     logger.info("Starting orchestrator loop (Ctrl+C to stop)...")
     while _running:
-        orchestrator_instance.process_needs_action()
-        orchestrator_instance.process_approved()
+        orchestrator_instance.process_tasks()
         
         update_dashboard(vault_path)
         

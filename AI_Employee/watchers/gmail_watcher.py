@@ -17,8 +17,15 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googlea
 class GmailWatcher(BaseWatcher):
     def __init__(self, vault_path: Path, check_interval_seconds: int = 300):
         super().__init__(vault_path, check_interval_seconds)
-        self.creds = self._authenticate()
-        self.service = build('gmail', 'v1', credentials=self.creds)
+        self.enabled = True
+        self.creds = None
+        self.service = None
+        try:
+            self.creds = self._authenticate()
+            self.service = build('gmail', 'v1', credentials=self.creds)
+        except Exception as e:
+            self.enabled = False
+            logger.error(f"GmailWatcher disabled due to auth/setup error: {e}")
 
     def _authenticate(self):
         creds = None
@@ -43,6 +50,9 @@ class GmailWatcher(BaseWatcher):
         return creds
 
     def check_for_updates(self) -> bool:
+        if not self.enabled or not self.service:
+            return False
+
         logger.debug("Checking for new emails...")
         try:
             # Query for unread and important messages

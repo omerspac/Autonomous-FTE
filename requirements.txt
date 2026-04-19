@@ -1,5 +1,5 @@
 # Core
-watchdog==3.0.0
+watchdog>=6.0.0,<7.0.0
 
 # Gmail API
 google-api-python-client==2.112.0
@@ -7,7 +7,8 @@ google-auth-oauthlib==1.2.0
 google-auth-httplib2==0.2.0
 
 # WhatsApp (Playwright)
-playwright==1.40.0
+playwright>=1.52.0,<2.0.0
 
 # Utilities
 pathlib==1.0.1
+python-dotenv==1.0.1
