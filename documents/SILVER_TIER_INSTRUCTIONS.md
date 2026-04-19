@@ -15,9 +15,9 @@
     *(Note: If you use a virtual environment, activate it first.)*
 
 2.  **Install MCP Server Dependencies:**
-    Navigate to the `mcp_server` directory:
+    Navigate to the MCP server directory you need (example: email server):
     ```bash
-    cd mcp_server
+    cd mcp_servers/email-mcp
     npm install
     ```
     This installs `@modelcontextprotocol/sdk`.
@@ -44,7 +44,7 @@ AI_Employee/
 ├── orchestrator/           # Logic (Reasoning & Execution)
 ├── skills/                 # AI Capabilities
 └── utils/                  # Helpers
-mcp_server/                 # Node.js MCP Server for external actions
+mcp_servers/                # Node.js MCP action servers (email/social/accounting/browser)
 run_silver.py               # Main entry point
 ```
 
@@ -68,7 +68,7 @@ run_silver.py               # Main entry point
 ## 5. Customization
 
 - **Watchers:** Edit `AI_Employee/watchers/*.py` to implement real API calls (Gmail, WhatsApp, LinkedIn).
-- **MCP Server:** Edit `mcp_server/index.js` to add real tools.
+- **MCP Server:** Edit the target server entrypoint (for example, `mcp_servers/email-mcp/index.js`) to add real tools.
 - **Orchestrator:** Edit `AI_Employee/orchestrator/orchestrator.py` to change the logic or integrate with a real LLM (currently uses a mock/fallback if `claude` CLI is missing).
 
 ## 6. Logs
